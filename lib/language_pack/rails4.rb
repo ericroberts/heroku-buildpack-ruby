@@ -100,9 +100,19 @@ WARNING
       end
     end
 
-    if rake_task_defined?("jekyll:generate")
-      time = Benchmark.realtime { pipe("env PATH=$PATH:bin bundle exec rake assets:precompile 2>&1") }
-      puts "Jekyll compilation completed (#{"%.2f" % time}s)"
+    log("jekyll_precompile") do
+      jekyll_compile = rake.task("jekyll:generate")
+      if jekyll_compile.is_defined?
+        jekyll_compile.invoke
+
+        if jekyll_compile.success?
+          log "jekyll_precompile", :status => "success"
+          puts "Jekyll compilation completed (#{"%.2f" % jekyll_compile.time}s)"
+        else
+          log "jekyll_precompile", :status => "failure"
+          error "Precompiling jekyll failed."
+        end
+      end
     end
   end
 
