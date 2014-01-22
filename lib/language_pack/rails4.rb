@@ -99,6 +99,11 @@ WARNING
         end
       end
     end
+
+    if rake_task_defined?("jekyll:generate")
+      time = Benchmark.realtime { pipe("env PATH=$PATH:bin bundle exec rake assets:precompile 2>&1") }
+      puts "Jekyll compilation completed (#{"%.2f" % time}s)"
+    end
   end
 
   def cleanup_assets_cache
