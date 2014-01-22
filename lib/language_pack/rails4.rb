@@ -100,16 +100,16 @@ WARNING
       end
     end
 
-    log("jekyll_precompile") do
-      jekyll_compile = rake.task("jekyll:generate")
-      if jekyll_compile.is_defined?
-        jekyll_compile.invoke
+    log("jekyll_build") do
+      jekyll_build = rake.task("jekyll:build")
+      if jekyll_build.is_defined?
+        jekyll_build.invoke
 
-        if jekyll_compile.success?
-          log "jekyll_precompile", :status => "success"
-          puts "Jekyll compilation completed (#{"%.2f" % jekyll_compile.time}s)"
+        if jekyll_build.success?
+          log "jekyll_build", :status => "success"
+          puts "Jekyll compilation completed (#{"%.2f" % jekyll_build.time}s)"
         else
-          log "jekyll_precompile", :status => "failure"
+          log "jekyll_build", :status => "failure"
           error "Precompiling jekyll failed."
         end
       end
